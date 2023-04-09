@@ -9,11 +9,13 @@ import com.ey.services.ports.CityService;
 import com.ey.services.ports.CountryService;
 import com.ey.services.ports.PhoneService;
 import com.ey.services.ports.UserService;
+import com.ey.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -60,31 +62,63 @@ public class UserServiceImpl implements UserService {
 
         System.out.println("--UserDTO--: " + userDto);
 
+        try {
+
+            if(!ValidationUtil.isValidEmail(userDto.getUserMail())){
+                throw new Exception("Email Error");
+            }
+
+            if(!ValidationUtil.isValidPassword(userDto.getUserPasswd())){
+                throw new Exception("Passwd Error");
+            }
+
+            User uTmp = getUserEnt(userDto);
+
+            userRepository.save(uTmp);
+
+            UserDTO uDTO = modelMapper.map(uTmp, UserDTO.class);
+
+            userDto.getPhones().stream().forEach(phone -> {
+
+                CityDTO cDto = cityService.findCityByCityCode(phone.getCityCode());
+                phone.setCityDTO(cDto);
+
+                CountryDTO countryDTO = countryService.findByCountryCode(phone.getCountryCode());
+                phone.setCountryDTO(countryDTO);
+
+                phone.setUserDTO(uDTO);
+
+                phoneService.savePhone(phone);
+            });
+
+            return userDto;
+
+        } catch (Exception e) {
+            System.out.println("--Message: "+e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public User getUserEnt(UserDTO userDto) {
         User userEnt = new User();
         userEnt.setUserName(userDto.getUserName());
-        userEnt.setUserMail(userDto.getUserMail());
+        userEnt.setUserMail(userDto.getUserMail().toLowerCase());
         userEnt.setUserPasswd(userDto.getUserPasswd());
-
-        userRepository.save(userEnt);
+        userEnt.setDateCreation(Calendar.getInstance().getTime());
+        userEnt.setDateUpdate(Calendar.getInstance().getTime());
+        userEnt.setDateLastLogin(Calendar.getInstance().getTime());
+        userEnt.setIsActive("1");
 
         System.out.println("** userEnt **: " + userEnt);
 
-        UserDTO uDTO = modelMapper.map(userEnt, UserDTO.class);
-
-
-        userDto.getPhones().stream().forEach(phone -> {
-
-            CityDTO cDto = cityService.findCityByCityCode(phone.getCityCode());
-            phone.setCityDTO(cDto);
-
-            CountryDTO countryDTO = countryService.findByCountryCode(phone.getCountryCode());
-            phone.setCountryDTO(countryDTO);
-
-            phone.setUserDTO(uDTO);
-
-            phoneService.savePhone(phone);
-        });
-
-        return userDto;
+        return userEnt;
     }
+
+    private void validateEmailFormat(String email){
+
+
+    }
+
+
 }

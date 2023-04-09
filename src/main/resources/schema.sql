@@ -17,8 +17,13 @@ CREATE TABLE "EYSCHEMA"."TBL_COUNTRY" (
 CREATE TABLE "EYSCHEMA"."TBL_USERS" (
 	userid               INTEGER GENERATED ALWAYS AS IDENTITY  NOT NULL,
 	username             VARCHAR(50)   NOT NULL,
-	usermail             VARCHAR(50)   NOT NULL,
+	usermail             VARCHAR(50)   NOT NULL UNIQUE,
 	userpasswd           VARCHAR(50)   NOT NULL,
+	datecreation         TIMESTAMP   NOT NULL,
+	dateupdate           TIMESTAMP   NOT NULL,
+	datelastlogin        TIMESTAMP   ,
+	isactive             VARCHAR(1)   NOT NULL,
+	tokensession         CLOB(200)   ,
 	CONSTRAINT "PK_TBL_USER" PRIMARY KEY ( userid )
  );
 

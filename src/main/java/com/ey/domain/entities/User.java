@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,21 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     public List<Phone> phones;
+
+    @Column(name = "datecreation", nullable = false, length = 50)
+    public Date dateCreation;
+
+    @Column(name = "dateupdate", nullable = false, length = 50)
+    public Date dateUpdate;
+
+    @Column(name = "datelastlogin", length = 50)
+    public Date dateLastLogin;
+
+    @Column(name = "isactive", nullable = false, length = 1)
+    public String isActive;
+
+    @Column(name = "tokensession", length = 200)
+    public String tokenSession;
 
     @Override
     public String toString() {

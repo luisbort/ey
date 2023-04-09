@@ -1,5 +1,6 @@
 package com.ey.domain.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,9 +22,12 @@ public class PhoneDTO {
     @JsonProperty("countrycode")
     private String countryCode;
 
+    @JsonIgnore
     private CityDTO cityDTO;
 
+    @JsonIgnore
     private CountryDTO countryDTO;
 
+    @JsonIgnore
     private UserDTO userDTO;
 }
