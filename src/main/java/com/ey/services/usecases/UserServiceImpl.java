@@ -40,18 +40,10 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> findAll() {
 
         Iterable<User> usersDB = userRepository.findAll();
-
-        //if (usersDB != null || usersDB.)
-
         List<UserDTO> list = new ArrayList<>();
-
         usersDB.forEach(c -> {
-            UserDTO userDTO = modelMapper.map(c,UserDTO.class);
+            UserDTO userDTO = modelMapper.map(c, UserDTO.class);
             list.add(userDTO);
-
-            /*System.out.println("User: " + c.getUserId() + "-" + c.getUserName());
-            System.out.println("Phones: " + c.getPhones().size());
-            System.out.println("Country: " + c.getPhones().get(0).getCountry().getCountryName());*/
         });
 
         return list;
@@ -60,15 +52,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDto) {
 
-        System.out.println("--UserDTO--: " + userDto);
+        System.out.println("--UserDTO: " + userDto);
 
         try {
 
-            if(!ValidationUtil.isValidEmail(userDto.getUserMail())){
+            if (!ValidationUtil.isValidEmail(userDto.getUserMail())) {
                 throw new Exception("Email Error");
             }
 
-            if(!ValidationUtil.isValidPassword(userDto.getUserPasswd())){
+            if (!ValidationUtil.isValidPassword(userDto.getUserPasswd())) {
                 throw new Exception("Passwd Error");
             }
 
@@ -94,7 +86,7 @@ public class UserServiceImpl implements UserService {
             return userDto;
 
         } catch (Exception e) {
-            System.out.println("--Message: "+e.getMessage());
+            System.out.println("--ErrorMessage: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -110,15 +102,9 @@ public class UserServiceImpl implements UserService {
         userEnt.setDateLastLogin(Calendar.getInstance().getTime());
         userEnt.setIsActive("1");
 
-        System.out.println("** userEnt **: " + userEnt);
+        System.out.println("--userEnt: " + userEnt);
 
         return userEnt;
     }
-
-    private void validateEmailFormat(String email){
-
-
-    }
-
 
 }

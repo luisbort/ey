@@ -19,7 +19,6 @@ public class UserDTO {
     public Integer userId;
 
     @JsonProperty(value = "name", required = true)
-    //@NotBlank(message = "no acepta valores nulos")
     @NotNull
     private String userName;
 
