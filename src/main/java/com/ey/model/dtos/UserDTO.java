@@ -18,13 +18,15 @@ public class UserDTO {
     public Integer userId;
 
     @JsonProperty(value = "name", required = true)
-    @NotNull
+    @NotNull(message = "name must not be null")
     private String userName;
 
     @JsonProperty("email")
+    @NotNull(message = "email must not be null")
     private String userMail;
 
     @JsonProperty("password")
+    @NotNull(message = "password must not be null")
     private String userPasswd;
 
     @JsonProperty("phones")
