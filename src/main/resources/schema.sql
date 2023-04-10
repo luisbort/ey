@@ -24,6 +24,7 @@ CREATE TABLE "EYSCHEMA"."TBL_USERS" (
 	datelastlogin        TIMESTAMP   ,
 	isactive             VARCHAR(1)   NOT NULL,
 	tokensession         CLOB(200)   ,
+	useruuid             VARCHAR(64)   ,
 	CONSTRAINT "PK_TBL_USER" PRIMARY KEY ( userid )
  );
 

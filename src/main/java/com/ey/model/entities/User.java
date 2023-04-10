@@ -47,6 +47,9 @@ public class User {
     @Column(name = "tokensession", length = 200)
     public String tokenSession;
 
+    @Column(name = "useruuid", length = 60)
+    public String userUuid;
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");

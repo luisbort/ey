@@ -24,8 +24,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        StringBuilder errorMessage = new StringBuilder("");
+        ex.getBindingResult().getAllErrors().forEach(c -> errorMessage.append(c.getDefaultMessage()).append(";"));
 
-        final ApiError apiError = new ApiError("Some fields in JSON must not be null");
+        final ApiError apiError = new ApiError(errorMessage.toString());
         return new ResponseEntity<Object>(apiError, HttpStatus.BAD_REQUEST);
     }
 }

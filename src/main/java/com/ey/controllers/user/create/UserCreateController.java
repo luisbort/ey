@@ -25,11 +25,11 @@ public class UserCreateController {
 
 
     @PostMapping(value = "/createUser")
-    public ResponseEntity<ApiMessage> create(@Valid @RequestBody UserDTO userDto) throws GlobalException {
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDto) throws GlobalException {
 
         UserDTO userCreated = userService.createUser(userDto);
         ApiMessage message = new ApiMessage("SUCCESS");
-        return new ResponseEntity<ApiMessage>(message, HttpStatus.CREATED);
+        return new ResponseEntity<UserDTO>(userCreated, HttpStatus.CREATED);
 
     }
 

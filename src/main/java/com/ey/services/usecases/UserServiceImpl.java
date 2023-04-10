@@ -1,15 +1,16 @@
 package com.ey.services.usecases;
 
+import com.ey.exceptions.GlobalException;
 import com.ey.model.dtos.CityDTO;
 import com.ey.model.dtos.CountryDTO;
 import com.ey.model.dtos.UserDTO;
 import com.ey.model.entities.User;
 import com.ey.model.repository.UserRepository;
-import com.ey.exceptions.GlobalException;
 import com.ey.services.ports.CityService;
 import com.ey.services.ports.CountryService;
 import com.ey.services.ports.PhoneService;
 import com.ey.services.ports.UserService;
+import com.ey.util.ToolsUtil;
 import com.ey.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,8 @@ public class UserServiceImpl implements UserService {
                 phoneService.savePhone(phone);
             });
 
-            return userDto;
+            uDTO.setPhones(userDto.getPhones());
+            return uDTO;
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -103,6 +105,7 @@ public class UserServiceImpl implements UserService {
         userEnt.setDateUpdate(Calendar.getInstance().getTime());
         userEnt.setDateLastLogin(Calendar.getInstance().getTime());
         userEnt.setIsActive("1");
+        userEnt.setUserUuid(ToolsUtil.getUuid());
 
         System.out.println("--userEnt: " + userEnt);
 
