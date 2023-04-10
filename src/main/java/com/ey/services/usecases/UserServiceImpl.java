@@ -14,6 +14,7 @@ import com.ey.util.ToolsUtil;
 import com.ey.util.ValidationUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -88,9 +89,11 @@ public class UserServiceImpl implements UserService {
             uDTO.setPhones(userDto.getPhones());
             return uDTO;
 
+        } catch(DataIntegrityViolationException ex){
+            System.out.println("Error: " + ex.getMessage());
+            throw new GlobalException("El correo ya registrado");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            System.out.println("Error: " + e.getLocalizedMessage());
             throw new GlobalException("DataBase Error");
         }
 
