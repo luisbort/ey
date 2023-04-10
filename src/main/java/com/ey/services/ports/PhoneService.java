@@ -1,6 +1,6 @@
 package com.ey.services.ports;
 
-import com.ey.domain.dtos.PhoneDTO;
+import com.ey.model.dtos.PhoneDTO;
 
 public interface PhoneService {
 

@@ -1,6 +1,6 @@
 package com.ey.controllers.city.read;
 
-import com.ey.domain.dtos.CityDTO;
+import com.ey.model.dtos.CityDTO;
 import com.ey.services.ports.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class CityController {
 
         CityDTO city = cityService.findCityByCityCode(cityDTO.getCityCode());
 
-        return new ResponseEntity(city, HttpStatus.CREATED);
+        return new ResponseEntity<CityDTO>(city, HttpStatus.OK);
     }
 
 }

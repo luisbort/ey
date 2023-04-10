@@ -1,6 +1,6 @@
 package com.ey.services.ports;
 
-import com.ey.domain.dtos.CityDTO;
+import com.ey.model.dtos.CityDTO;
 
 import java.util.List;
 

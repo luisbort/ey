@@ -1,8 +1,8 @@
 package com.ey.services.usecases;
 
-import com.ey.domain.dtos.PhoneDTO;
-import com.ey.domain.entities.Phone;
-import com.ey.domain.repository.PhoneRepository;
+import com.ey.model.dtos.PhoneDTO;
+import com.ey.model.entities.Phone;
+import com.ey.model.repository.PhoneRepository;
 import com.ey.services.ports.PhoneService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

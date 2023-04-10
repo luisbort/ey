@@ -1,8 +1,8 @@
 package com.ey.services.usecases;
 
-import com.ey.domain.dtos.CountryDTO;
-import com.ey.domain.entities.Country;
-import com.ey.domain.repository.CountryRepository;
+import com.ey.model.dtos.CountryDTO;
+import com.ey.model.entities.Country;
+import com.ey.model.repository.CountryRepository;
 import com.ey.services.ports.CountryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,11 @@
 package com.ey.services.usecases;
 
-import com.ey.domain.dtos.CityDTO;
-import com.ey.domain.dtos.CountryDTO;
-import com.ey.domain.dtos.UserDTO;
-import com.ey.domain.entities.User;
-import com.ey.domain.repository.UserRepository;
+import com.ey.model.dtos.CityDTO;
+import com.ey.model.dtos.CountryDTO;
+import com.ey.model.dtos.UserDTO;
+import com.ey.model.entities.User;
+import com.ey.model.repository.UserRepository;
+import com.ey.exceptions.GlobalException;
 import com.ey.services.ports.CityService;
 import com.ey.services.ports.CountryService;
 import com.ey.services.ports.PhoneService;
@@ -50,19 +51,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO createUser(UserDTO userDto) {
+    public UserDTO createUser(UserDTO userDto) throws GlobalException {
 
-        System.out.println("--UserDTO: " + userDto);
+        System.out.println("--create User: " + userDto);
+
+        if (!ValidationUtil.isValidEmail(userDto.getUserMail())) {
+            throw new GlobalException("Email Error: Is Not Valid Email");
+        }
+
+        if (!ValidationUtil.isValidPassword(userDto.getUserPasswd())) {
+            throw new GlobalException("Passwd Error: Is Not Valid Password");
+        }
 
         try {
-
-            if (!ValidationUtil.isValidEmail(userDto.getUserMail())) {
-                throw new Exception("Email Error");
-            }
-
-            if (!ValidationUtil.isValidPassword(userDto.getUserPasswd())) {
-                throw new Exception("Passwd Error");
-            }
 
             User uTmp = getUserEnt(userDto);
 
@@ -86,8 +87,9 @@ public class UserServiceImpl implements UserService {
             return userDto;
 
         } catch (Exception e) {
-            System.out.println("--ErrorMessage: " + e.getMessage());
-            throw new RuntimeException(e);
+            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getLocalizedMessage());
+            throw new GlobalException("DataBase Error");
         }
 
     }

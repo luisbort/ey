@@ -1,7 +1,8 @@
 package com.ey.controllers.user.create;
 
-import com.ey.domain.dtos.UserDTO;
-import com.ey.services.ports.CountryService;
+import com.ey.controllers.globalapi.ApiMessage;
+import com.ey.model.dtos.UserDTO;
+import com.ey.exceptions.GlobalException;
 import com.ey.services.ports.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,6 @@ import javax.validation.Valid;
 public class UserCreateController {
 
     @Autowired
-    private CountryService countryService;
-
-    @Autowired
     private UserService userService;
 
     public UserCreateController() {
@@ -27,9 +25,12 @@ public class UserCreateController {
 
 
     @PostMapping(value = "/createUser")
-    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDto) {
+    public ResponseEntity<ApiMessage> create(@Valid @RequestBody UserDTO userDto) throws GlobalException {
+
         UserDTO userCreated = userService.createUser(userDto);
-        return new ResponseEntity(userCreated, HttpStatus.CREATED);
+        ApiMessage message = new ApiMessage("SUCCESS");
+        return new ResponseEntity<ApiMessage>(message, HttpStatus.CREATED);
+
     }
 
 }

@@ -1,8 +1,8 @@
 package com.ey.services.usecases;
 
-import com.ey.domain.dtos.CityDTO;
-import com.ey.domain.entities.City;
-import com.ey.domain.repository.CityRepository;
+import com.ey.model.dtos.CityDTO;
+import com.ey.model.entities.City;
+import com.ey.model.repository.CityRepository;
 import com.ey.services.ports.CityService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

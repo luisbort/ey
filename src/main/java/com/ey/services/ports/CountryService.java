@@ -1,6 +1,6 @@
 package com.ey.services.ports;
 
-import com.ey.domain.dtos.CountryDTO;
+import com.ey.model.dtos.CountryDTO;
 
 public interface CountryService {
 
