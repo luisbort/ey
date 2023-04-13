@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
+import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
 
@@ -21,4 +22,10 @@ public interface UserRepository extends CrudRepository<User, Integer> {
                           @Param("userPasswd") String userPasswd,
                           @Param("dateUpdate") Date dateUpdate,
                           @Param("userId") Integer userId);
+
+    public Optional<User> findOneByUserMail(String userEmail);
+
+    @Modifying
+    @Query(value = "update User u set u.dateUpdate = :dateUpdate where u.userId = :userId")
+    public int updateDateLastLogin(@Param("dateUpdate") Date dateUpdate, @Param("userId") Integer userId);
 }

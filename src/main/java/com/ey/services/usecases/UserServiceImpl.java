@@ -6,6 +6,7 @@ import com.ey.model.dtos.CountryDTO;
 import com.ey.model.dtos.UserDTO;
 import com.ey.model.entities.User;
 import com.ey.model.repository.UserRepository;
+import com.ey.security.TokensUtils;
 import com.ey.services.ports.CityService;
 import com.ey.services.ports.CountryService;
 import com.ey.services.ports.PhoneService;
@@ -91,10 +92,10 @@ public class UserServiceImpl implements UserService {
             return uDTO;
 
         } catch (DataIntegrityViolationException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            System.out.println("----> Error: " + ex.getMessage());
             throw new GlobalException("El correo ya registrado");
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("----> Error: " + e.getMessage());
             throw new GlobalException("DataBase Error");
         }
 
@@ -130,6 +131,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
+    @Override
+    public int updateDateLastLogin(Integer userId) throws GlobalException {
+
+        try {
+            return userRepository.updateDateLastLogin(Calendar.getInstance().getTime(), userId);
+        } catch (Exception e) {
+            throw new GlobalException("Error in Database. Please verify.");
+        }
+
+    }
+
     public User getUserEnt(UserDTO userDto) {
         User userEnt = new User();
 
@@ -140,7 +153,7 @@ public class UserServiceImpl implements UserService {
             userEnt.setUserMail(userDto.getUserMail().toLowerCase());
 
         if (null != userDto.getUserPasswd() && !userDto.getUserPasswd().isEmpty())
-            userEnt.setUserPasswd(userDto.getUserPasswd());
+            userEnt.setUserPasswd(TokensUtils.getEncryptedPassword(userDto.getUserPasswd()));
 
         if (null == userDto.getDateCreation())
             userEnt.setDateCreation(Calendar.getInstance().getTime());
@@ -156,7 +169,7 @@ public class UserServiceImpl implements UserService {
         if (null == userDto.getUserUuid() || userDto.getUserUuid().isEmpty())
             userEnt.setUserUuid(ToolsUtil.getUuid());
 
-        System.out.println("--userEnt: " + userEnt);
+        System.out.println("----> userEnt: " + userEnt);
 
         return userEnt;
     }

@@ -21,7 +21,7 @@ public class CityServiceImpl implements CityService {
     private ModelMapper modelMapper;
 
     @Override
-    public List<CityDTO> findAll(){
+    public List<CityDTO> findAll() {
         Iterable<City> allCities = cityRepository.findAll();
         List<CityDTO> cities = new ArrayList<>();
         allCities.forEach(city -> {
@@ -32,15 +32,11 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityDTO findCityByCityCode(String cityCode){
+    public CityDTO findCityByCityCode(String cityCode) {
 
         City city = cityRepository.findCityByCityCode(cityCode);
 
-        System.out.println(city);
-
         CityDTO cityDto = modelMapper.map(city, CityDTO.class);
-
-        System.out.println(cityDto);
 
         return cityDto;
     }

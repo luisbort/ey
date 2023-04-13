@@ -26,7 +26,7 @@ public class User {
     @Column(name = "usermail", nullable = false, length = 50)
     public String userMail;
 
-    @Column(name = "userpasswd", nullable = false, length = 50)
+    @Column(name = "userpasswd", nullable = false, length = 100)
     public String userPasswd;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
