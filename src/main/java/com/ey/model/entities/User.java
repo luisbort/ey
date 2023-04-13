@@ -29,7 +29,7 @@ public class User {
     @Column(name = "userpasswd", nullable = false, length = 50)
     public String userPasswd;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     public List<Phone> phones;
 
     @Column(name = "datecreation", nullable = false, length = 50)
@@ -58,6 +58,12 @@ public class User {
         sb.append(", userMail='").append(userMail).append('\'');
         sb.append(", userPasswd='").append(userPasswd).append('\'');
         sb.append(", phones=").append(phones);
+        sb.append(", dateCreation=").append(dateCreation);
+        sb.append(", dateUpdate=").append(dateUpdate);
+        sb.append(", dateLastLogin=").append(dateLastLogin);
+        sb.append(", isActive='").append(isActive).append('\'');
+        sb.append(", tokenSession='").append(tokenSession).append('\'');
+        sb.append(", userUuid='").append(userUuid).append('\'');
         sb.append('}');
         return sb.toString();
     }

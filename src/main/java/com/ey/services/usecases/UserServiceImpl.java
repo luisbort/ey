@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService {
             uDTO.setPhones(userDto.getPhones());
             return uDTO;
 
-        } catch(DataIntegrityViolationException ex){
+        } catch (DataIntegrityViolationException ex) {
             System.out.println("Error: " + ex.getMessage());
             throw new GlobalException("El correo ya registrado");
         } catch (Exception e) {
@@ -99,16 +100,61 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public void removeUserByEmail(String userEmail) throws GlobalException {
+
+        User uDB = userRepository.findByUserMail(userEmail.toLowerCase());
+
+        if (null != uDB) {
+            userRepository.delete(uDB);
+        } else {
+            throw new GlobalException("User Not Found by Email. Please verify.");
+        }
+    }
+
+    @Transactional
+    @Override
+    public int updateUser(UserDTO userDto) throws GlobalException {
+
+        User uDB = userRepository.findByUserMail(userDto.getUserMail());
+        if (null != uDB) {
+            try {
+                return userRepository.updateUser(userDto.getUserName(), userDto.getUserMail(), userDto.getUserPasswd(),
+                        Calendar.getInstance().getTime(), uDB.getUserId());
+            } catch (Exception e) {
+                throw new GlobalException("Error in Database. Please verify.");
+            }
+
+        } else {
+            throw new GlobalException("User Not Found by Email. Please verify.");
+        }
+    }
+
     public User getUserEnt(UserDTO userDto) {
         User userEnt = new User();
-        userEnt.setUserName(userDto.getUserName());
-        userEnt.setUserMail(userDto.getUserMail().toLowerCase());
-        userEnt.setUserPasswd(userDto.getUserPasswd());
-        userEnt.setDateCreation(Calendar.getInstance().getTime());
+
+        if (null != userDto.getUserName() && !userDto.getUserName().isEmpty())
+            userEnt.setUserName(userDto.getUserName());
+
+        if (null != userDto.getUserMail() && !userDto.getUserMail().isEmpty())
+            userEnt.setUserMail(userDto.getUserMail().toLowerCase());
+
+        if (null != userDto.getUserPasswd() && !userDto.getUserPasswd().isEmpty())
+            userEnt.setUserPasswd(userDto.getUserPasswd());
+
+        if (null == userDto.getDateCreation())
+            userEnt.setDateCreation(Calendar.getInstance().getTime());
+
         userEnt.setDateUpdate(Calendar.getInstance().getTime());
-        userEnt.setDateLastLogin(Calendar.getInstance().getTime());
-        userEnt.setIsActive("1");
-        userEnt.setUserUuid(ToolsUtil.getUuid());
+
+        if (null == userDto.getDateLastLogin())
+            userEnt.setDateLastLogin(Calendar.getInstance().getTime());
+
+        if (null == userDto.getIsActive() || userDto.getIsActive().isEmpty())
+            userEnt.setIsActive("1");
+
+        if (null == userDto.getUserUuid() || userDto.getUserUuid().isEmpty())
+            userEnt.setUserUuid(ToolsUtil.getUuid());
 
         System.out.println("--userEnt: " + userEnt);
 

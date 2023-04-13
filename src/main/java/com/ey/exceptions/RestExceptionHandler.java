@@ -30,4 +30,5 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = new ApiError(errorMessage.toString());
         return new ResponseEntity<Object>(apiError, HttpStatus.BAD_REQUEST);
     }
+
 }
